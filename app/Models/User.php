@@ -11,22 +11,30 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
-#[Fillable(['name', 'email', 'password', 'privacy_level', 'is_profile_complete'])]
-#[Hidden(['password', 'remember_token'])]
+#[
+    Fillable([
+        "name",
+        "email",
+        "password",
+        "privacy_level",
+        "is_profile_complete",
+    ]),
+]
+#[Hidden(["password", "remember_token"])]
 class User extends Authenticatable
 {
     /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable;
 
-    public function getJWTIdentifier(): mixed
+    public function getJWTIdentifier()
     {
         return $this->getKey();
     }
 
-    public function getJWTCustomClaims(): array
+    public function getJWTCustomClaims()
     {
         return [
-            'role' => 'user'
+            "role" => "user",
         ];
     }
 
@@ -38,9 +46,9 @@ class User extends Authenticatable
     protected function casts(): array
     {
         return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-            'is_profile_complete' => 'boolean',
+            "email_verified_at" => "datetime",
+            "password" => "hashed",
+            "is_profile_complete" => "boolean",
         ];
     }
 }
