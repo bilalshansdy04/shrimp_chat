@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\MessageController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('v1')->group(function () {
@@ -17,7 +18,14 @@ Route::prefix('v1')->group(function () {
             Route::get('/me', [AuthController::class, 'me']);
             Route::post('/logout', [AuthController::class, 'logout']);
         });
-
+        Route::prefix('chat')->group(function () {
+            Route::get('/rooms', [MessageController::class, 'getRooms']);
+            Route::get('/rooms/{roomId}/messages', [
+                MessageController::class,
+                'getMessages',
+            ]);
+            Route::post('/messages', [MessageController::class, 'sendMessage']);
+        });
         // Rute fitur lain
     });
 });
