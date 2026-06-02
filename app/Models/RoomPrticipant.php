@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 
 #[Fillable(['room_id', 'user_id', 'role', 'joined_at', 'cleared_at'])]
-class RoomaPrticipants extends Model
+class RoomPrticipant extends Model
 {
     public $timestamps = false;
 

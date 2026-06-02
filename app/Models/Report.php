@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 
 #[Fillable(['reporter_id', 'reported_id', 'reason', 'evidence_snapshot', 'status'])]
-class Reports extends Model
+class Report extends Model
 {
 
     const UPDATED_AT = null;

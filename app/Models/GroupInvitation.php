@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 
 #[Fillable(['room_id', 'inviter_id', 'invitee_id', 'status'])]
-class GroupInvitations extends Model
+class GroupInvitation extends Model
 {
     const UPDATED_AT = null;
     

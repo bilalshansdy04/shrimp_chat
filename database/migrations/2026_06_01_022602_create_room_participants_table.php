@@ -23,7 +23,6 @@ return new class extends Migration
             $table->timestamp('joined_at')->userCurrent();
             // Digunakan sebagai batas acuan waktu untuk fitur Clear Chat lokal
             $table->timestamp('cleared_at')->nullable();
-            $table->timestamps();
         });
     }
 
