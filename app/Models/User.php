@@ -13,28 +13,28 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
 
 #[
     Fillable([
-        "name",
-        "email",
-        "password",
-        "privacy_level",
-        "is_profile_complete",
+        'name',
+        'email',
+        'password',
+        'privacy_level',
+        'is_profile_complete',
     ]),
 ]
-#[Hidden(["password", "remember_token"])]
-class User extends Authenticatable
+#[Hidden(['password', 'remember_token'])]
+class User extends Authenticatable implements JWTSubject
 {
     /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable;
 
-    public function getJWTIdentifier()
+    public function getJWTIdentifier(): mixed
     {
         return $this->getKey();
     }
 
-    public function getJWTCustomClaims()
+    public function getJWTCustomClaims(): array
     {
         return [
-            "role" => "user",
+            'role' => 'user',
         ];
     }
 
@@ -46,9 +46,9 @@ class User extends Authenticatable
     protected function casts(): array
     {
         return [
-            "email_verified_at" => "datetime",
-            "password" => "hashed",
-            "is_profile_complete" => "boolean",
+            'email_verified_at' => 'datetime',
+            'password' => 'hashed',
+            'is_profile_complete' => 'boolean',
         ];
     }
 }
