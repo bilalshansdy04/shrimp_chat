@@ -17,7 +17,12 @@ return new class extends Migration
             $table->foreignId('room_id')
                 ->constrained('rooms')
                 ->onDelete('cascade');
+            // The Inviter
             $table->foreignId('inviter_id')
+                ->constrained('users')
+                ->onDelete('cascade');
+            // The Invitee
+            $table->foreignId('invitee_id')
                 ->constrained('users')
                 ->onDelete('cascade');
             $table->enum('status', ['pending', 'accepted', 'rejected'])

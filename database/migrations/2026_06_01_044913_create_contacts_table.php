@@ -13,9 +13,11 @@ return new class extends Migration
     {
         Schema::create('contacts', function (Blueprint $table) {
             $table->id();
+            // Requester
             $table->foreignId('user_id')
                 ->constrained('users')
                 ->onDelete('cascade');
+            // Receiver
             $table->foreignId('contact_id')
                 ->constrained('users')
                 ->onDelete('cascade');
