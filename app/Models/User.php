@@ -51,4 +51,9 @@ class User extends Authenticatable implements JWTSubject
             'is_profile_complete' => 'boolean',
         ];
     }
+
+    public function profile()
+    {
+        return $this->hasOne(Profile::class);
+    }
 }

@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use App\Models\User;
 use App\Models\Profile;
+use App\Models\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
@@ -101,6 +101,84 @@ class AuthController extends Controller
                     "privacy_level" => $user->privacy_level,
                     "is_profile_complete" => $user->is_profile_complete,
                 ],
+            ],
+            200,
+        );
+    }
+
+    public function login(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            "email" => "required|string|email",
+            "password" => "required|string",
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(
+                [
+                    "success" => false,
+                    "errors" => $validator->errors(),
+                ],
+                422,
+            );
+        }
+
+        $credentials = $request->only("email", "password");
+
+        // Pengecekan kredensial menggunakan guard JWT
+        if (!($token = auth("api")->attempt($credentials))) {
+            return response()->json(
+                [
+                    "success" => false,
+                    "message" => "Email atau password salah.",
+                ],
+                401,
+            );
+        }
+
+        /** @var User $user */
+        $user = auth("api")->user();
+
+        return response()->json(
+            [
+                "success" => true,
+                "message" => "Login berhasil.",
+                "token" => $token,
+                "data" => [
+                    "name" => $user->name,
+                    "is_profile_complete" => $user->is_profile_complete,
+                ],
+            ],
+            200,
+        );
+    }
+
+    public function me()
+    {
+        /** @var User $user */
+        $user = auth("api")->user();
+
+        // Mengambil data relasi tabel profiles menggunakan Eager Loading
+        $user->load("profile");
+
+        return response()->json(
+            [
+                "success" => true,
+                "data" => $user,
+            ],
+            200,
+        );
+    }
+
+    public function logout()
+    {
+        $user = auth("api")->user();
+        auth("api")->logout();
+
+        return response()->json(
+            [
+                "success" => true,
+                "message" => "$user->name Telah Logout Dari Shrimpchat. Have A Nice Day",
             ],
             200,
         );
