@@ -16,7 +16,7 @@ class UserController extends Controller
         if (empty($keyword)) {
             return response()->json([
                 'success' => true,
-                'data' => []
+                'data' => [],
             ], 200);
         }
 
@@ -27,7 +27,10 @@ class UserController extends Controller
             ->where('id', '!=', $currentUserId)
             ->where(function ($query) use ($keyword) {
                 $query->where('name', 'LIKE', "%{$keyword}%")
-                      ->orWhere('email', 'LIKE', "%{$keyword}%");
+                    ->orWhere('email', 'LIKE', "%{$keyword}%")
+                    ->orWhereHas('profile', function ($q) use ($keyword) {
+                        $q->where('full_name', 'LIKE', "%{$keyword}%");
+                    });
             })
             // Opsional: Implementasi filter privacy_level jika diperlukan nanti
             ->limit(20) // Batasi hasil pencarian agar response tidak bengkak
@@ -35,7 +38,7 @@ class UserController extends Controller
 
         return response()->json([
             'success' => true,
-            'data' => $users
+            'data' => $users,
         ], 200);
     }
 }
