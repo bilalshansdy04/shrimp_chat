@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Events\MessageSent;
 use App\Http\Controllers\Controller;
 use App\Models\Message;
 use App\Models\Room;
@@ -118,20 +119,10 @@ class MessageController extends Controller
             'is_deleted' => false,
         ]);
 
-        
-        // Kode broadcast websocket
-        $message = Message::create([
-            'room_id' => $roomId,
-            'sender_id' => $userId,
-            'content' => $request->content,
-            'reply_to_id' => $request->reply_to_id,
-            'is_deleted' => false
-        ]);
-        
         // Muat relasi pengirim untuk dikembalikan sebagai response
         $message->load('sender.profile');
 
-        broadcast(new \App\Events\MessageSent($message))->toOthers();
+        broadcast(new MessageSent($message))->toOthers();
 
         return response()->json(
             [
